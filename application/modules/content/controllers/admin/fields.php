@@ -129,7 +129,7 @@ class Fields extends Admin_Controller {
             $datatype = isset($datatype_ref_array[$Content_fields->content_field_type_id]) ? $datatype_ref_array[$Content_fields->content_field_type_id] : 'text';
             $Content_fields->save_entries_column($datatype);
 
-            $this->session->set_flashdata('message', '<p class="success">Content field saved successfully.</p>');
+            $this->template->set_flash_notification('Content field saved successfully.', 'success');
 
             redirect(ADMIN_PATH . '/content/fields/index/' . $Type->id);
         }
@@ -158,8 +158,6 @@ class Fields extends Admin_Controller {
 
         if ($Content_fields->exists())
         {
-            $message = '';
-
             foreach ($Content_fields as $Content_field)
             {
                 $Content_field->drop_entries_column();
@@ -171,9 +169,7 @@ class Fields extends Admin_Controller {
             $this->cache->delete_all('entries');
             $this->cache->delete_all('content_types');
 
-            $message .= '<p class="success">The selected items were successfully deleted.</p>';
-
-            $this->session->set_flashdata('message', $message);
+            $this->template->set_flash_notification('The selected items were successfully deleted.', 'success');
         }
 
         redirect(ADMIN_PATH . '/content/fields/index/' . $type_id);

@@ -86,7 +86,8 @@ class General_settings extends Admin_Controller
             $this->load->library('cache');
             $this->cache->delete_all('settings');
 
-            $this->session->set_flashdata('message', '<p class="success">Settings Saved.</p>');
+            $this->template->set_flash_notification('Settings saved.', 'success');
+
             redirect(uri_string());
         }
         

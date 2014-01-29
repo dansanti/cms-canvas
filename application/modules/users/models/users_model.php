@@ -20,6 +20,34 @@ class Users_model extends DataMapper
         ),
     );
 
+    public $has_many = array(
+        'last_modified_entries' => array(
+            'class' => 'entries_model',
+            'other_field' => 'last_modified_by_user',
+            'join_self_as' => 'last_modified_by_user',
+            'model_path' => 'application/modules/content',
+        ),
+    );
+
+    /*
+     * Init
+     *
+     * Pre-popoulates the user object with data
+     */
+    public function init($data)
+    {
+        if (is_object($data)) {
+            $data = object_to_array($data);
+        }
+
+        foreach ($data as $key => $value) 
+        {
+            $this->$key = $value;
+        }
+    }
+
+    // --------------------------------------------------------------------
+
     /*
      * Login
      *
@@ -43,11 +71,11 @@ class Users_model extends DataMapper
         {
             if ( ! $Login_result->enabled)
             {
-                $CI->session->set_flashdata('message', '<p class="attention">Your account has been disabled.</p>');
+                $CI->template->set_notification('Your account has been disabled.', 'attention');
             }
             elseif ($CI->settings->users_module->email_activation && ! $Login_result->activated)
             {
-                $CI->session->set_flashdata('message', '<p class="attention">Your account has been not yet been activated.</p>');
+                $CI->template->set_notification('Your account has been not yet been activated.', 'attention');
             }
             else
             {
@@ -65,7 +93,7 @@ class Users_model extends DataMapper
         }
         else
         {
-            $CI->session->set_flashdata('message', '<p class="error">No match for Email and/or Password.</p>');
+            $CI->template->set_notification('No match for Email and/or Password.', 'error');
         }
 
         return FALSE;
@@ -242,4 +270,18 @@ class Users_model extends DataMapper
 
         return $User_model->get_by_id($user_id);
     }
+
+    // --------------------------------------------------------------------
+
+    /*
+     * Returns user's portrait image URL
+     *
+     * @param int
+     * @return string
+     */
+    function portrait($size)
+    {
+        return image_thumb('asdf.jpg', $size, $size, TRUE, array('no_image_image' => '/application/themes/admin/assets/images/headshot-placeholder.jpg'));
+    }
+ 
 }

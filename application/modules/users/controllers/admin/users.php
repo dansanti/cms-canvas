@@ -10,12 +10,12 @@
 
 class Users extends Admin_Controller 
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
-    function index()
+    public function index()
     {
         $data = array();
         $data['breadcrumb'] = set_crumbs(array(current_url() => 'Users'));
@@ -67,13 +67,12 @@ class Users extends Admin_Controller
         $this->template->view('admin/users/users', $data);
     }
 
-    function edit()
+    public function edit()
     {
         // Init
         $data = array();
         $data['breadcrumb'] = set_crumbs(array('users' => 'Users', current_url() => 'User Edit'));
         $data['User'] = $User = $this->load->model('users_model');
-        $data['states'] = unserialize(STATES);
         $data['edit_mode'] = $edit_mode = FALSE;
         $user_id = $this->uri->segment(4);
 
@@ -146,7 +145,7 @@ class Users extends Admin_Controller
 
             $User->save(); 
 
-            $this->session->set_flashdata('message', '<p class="success">User saved.</p>');
+            $this->template->set_flash_notification('User saved.', 'success');
 
             redirect(ADMIN_PATH . '/users'); 
         }
@@ -165,7 +164,7 @@ class Users extends Admin_Controller
         $this->template->view('admin/users/edit', $data);
     }
 
-    function delete()
+    public function delete()
     {
         $this->load->model('users_model');
 
@@ -204,13 +203,31 @@ class Users extends Admin_Controller
 
             $User->delete_all();
 
-            $this->session->set_flashdata('message', '<p class="success">The selected items were successfully deleted.</p>');
+            $this->template->set_flash_notification('The selected items were successfully deleted.', 'success');
         }
 
         redirect(ADMIN_PATH . '/users'); 
     }
 
-    function resend_activation()
+    public function profile()
+    {
+        // Init
+        $data = array();
+        $data['breadcrumb'] = set_crumbs(array('users' => 'Users', current_url() => 'User Edit'));
+        $data['User'] = $User = $this->load->model('users_model');
+        $user_id = $this->uri->segment(4);
+
+        $User->include_related('groups', 'type')->get_by_id($user_id);
+
+        if ( ! $User->exists()) 
+        {
+            show_404();
+        }
+
+        $this->template->view('admin/users/profile', $data);
+    }
+
+    public function resend_activation()
     {
         $user_id = $this->uri->segment('4');
 
@@ -231,7 +248,7 @@ class Users extends Admin_Controller
         $this->email->send();
     }
 
-    function login_as_user()
+    public function login_as_user()
     {
         $user_id = $this->uri->segment('4');
 
@@ -251,7 +268,7 @@ class Users extends Admin_Controller
     /*
      * Form Validation callback to check if an email address is already in use.
      */
-    function email_check($email, $user_id)
+    public function email_check($email, $user_id)
     {
         $this->load->model('users_model');
 

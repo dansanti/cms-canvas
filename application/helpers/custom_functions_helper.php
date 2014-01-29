@@ -271,6 +271,57 @@ if ( ! function_exists('theme_url'))
     }
 }
 
+// ------------------------------------------------------------------------
+
+/* 
+ * Display Notifications
+ *
+ * Returns formatted template notifications
+ *
+ * @param string
+ * @return string
+ */
+if ( ! function_exists('display_notifications'))
+{
+    function display_notifications()
+    {
+        $CI =& get_instance();
+
+        $output = '';
+
+        foreach ($CI->template->get_notifications() as $severity => $notifications) 
+        {
+            foreach ($notifications as $message) 
+            {
+                switch ($severity) 
+                {
+                    case 'success':
+                        $prefix = '<p class="notification success">';
+                        $suffix = '</p>';
+                        break;
+                    case 'error':
+                    case 'warning':
+                        $prefix = '<p class="notification error">';
+                        $suffix = '</p>';
+                        break;
+                    case 'attention':
+                        $prefix = '<p class="notification attention">';
+                        $suffix = '</p>';
+                    default:
+                        $prefix = '<p class="notification">';
+                        $suffix = '</p>';
+                        break;
+                }
+
+                $output .= $prefix . $message . '<span class="dropdown_close"></span>' . $suffix;
+            }
+        }
+
+        return $output;
+    }
+}
+
+
 
 // ------------------------------------------------------------------------
 

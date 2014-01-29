@@ -4,6 +4,7 @@
 
         <div class="buttons">
             <a class="button" href="#" onClick="$('#navigation_item_edit').submit()"><span>Save</span></a>
+            <a class="button" href="<?php echo site_url(ADMIN_PATH . '/navigations/items/tree/' . $Navigation->id); ?>"><span>Cancel</span></a>
         </div>
     </div>
     <div class="content">

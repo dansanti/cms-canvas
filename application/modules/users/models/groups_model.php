@@ -19,4 +19,21 @@ class Groups_model extends DataMapper
             'model_path' => 'application/modules/users',
         ),
     );
+
+    /*
+     * Init
+     *
+     * Pre-popoulates the group object with data
+     */
+    public function init($data)
+    {
+        if (is_object($data)) {
+            $data = object_to_array($data);
+        }
+
+        foreach ($data as $key => $value) 
+        {
+            $this->$key = $value;
+        }
+    }
 }

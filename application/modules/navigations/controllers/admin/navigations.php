@@ -57,7 +57,7 @@ class Navigations extends Admin_Controller {
             $Group->from_array($this->input->post());
             $Group->save();
 
-            $this->session->set_flashdata('message', '<p class="success">Navigation Saved.<p>');
+            $this->template->set_flash_notification('Navigation saved.', 'success');
 
             if ($edit_mode)
             {
@@ -104,13 +104,13 @@ class Navigations extends Admin_Controller {
             $this->load->library('navigations_library');
             $this->navigations_library->clear_cache();
 
-            $this->session->set_flashdata('message', '<p class="success">The selected items were successfully deleted.</p>');
+            $this->template->set_flash_notification('The selected items were successfully deleted.', 'success');
         }
 
         // Show error if any required navigations were requested to be deleted
         if ($Required_navigation->exists())
         {
-            $this->session->set_flashdata('message', '<p class="attention">One or more of the selected navigations are required by the system and could not be deleted.</p>');
+            $this->template->set_flash_notification('One or more of the selected navigations are required by the system and could not be deleted.', 'attention');
         }
 
         redirect(ADMIN_PATH . '/navigations');

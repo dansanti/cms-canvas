@@ -83,7 +83,7 @@ class Snippets extends Admin_Controller {
             $this->load->library('cache');
             $this->cache->delete_all('snippets');
 
-            $this->session->set_flashdata('message', '<p class="success">Snippet Saved.</p>');
+            $this->template->set_flash_notification('Snippet saved.', 'success');
 
             if ($this->input->post('save_exit'))
             {
@@ -129,9 +129,7 @@ class Snippets extends Admin_Controller {
             $this->load->library('cache');
             $this->cache->delete_all('snippets');
 
-            $message = '<p class="success">The selected items were successfully deleted.</p>';
-
-            $this->session->set_flashdata('message', $message);
+            $this->template->set_flash_notification('The selected items were successfully deleted.', 'success');
         }
 
         redirect(ADMIN_PATH . '/content/snippets');

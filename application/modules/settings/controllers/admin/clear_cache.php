@@ -70,7 +70,8 @@ class Clear_cache extends Admin_Controller
             }
 
             // Set a success message
-            $this->session->set_flashdata('message', '<p class="success">Cache succcessfully cleared.</p>');
+            $this->template->set_flash_notification('Cache succcessfully cleared.', 'success');
+
             redirect(current_url());
         }
 

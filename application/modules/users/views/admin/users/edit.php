@@ -4,6 +4,7 @@
 
         <div class="buttons">
             <a class="button" href="#" id="save" onClick="$('#user_edit_form').submit()"><span>Save</span></a>
+            <a class="button" href="<?php echo site_url(ADMIN_PATH . '/users'); ?>"><span>Cancel</span></a>
         </div>
     </div>
     <div class="content">
@@ -72,8 +73,13 @@
                     </div>
 
                     <div class="field_spacing">
-                        <?php echo form_label('State:', 'state'); ?>
-                        <?php echo form_dropdown('state', $states, set_value('state', (isset($User->state)) ? $User->state : ''), 'id="state" class="long"'); ?>
+                        <?php echo form_label('State/Province:', 'state'); ?>
+                        <?php echo form_input(array('id' => 'state', 'name' => 'state', 'value' => set_value('state', (isset($User->state)) ? $User->state : ''))); ?>
+                    </div>
+
+                    <div class="field_spacing">
+                        <?php echo form_label('Country:', 'country'); ?>
+                        <?php echo form_input(array('id' => 'country', 'name' => 'country', 'value' => set_value('country', (isset($User->country)) ? $User->country : ''))); ?>
                     </div>
 
                     <div class="field_spacing">

@@ -58,7 +58,8 @@ class Galleries extends Admin_Controller
 
             if ($edit_mode)
             {
-                $this->session->set_flashdata('message', '<p class="success">Gallery saved successfully.</p>');
+                $this->template->set_flash_notification('Gallery saved successfully.', 'success');
+
                 redirect(ADMIN_PATH . '/galleries'); 
             }
             else
@@ -93,7 +94,7 @@ class Galleries extends Admin_Controller
                 $Gallery->delete();
             }
 
-            $this->session->set_flashdata('message', '<p class="success">Gallery was deleted successfully.</p>');
+            $this->template->set_flash_notification('Gallery was deleted successfully.', 'success');
         }
 
         redirect(ADMIN_PATH . '/galleries'); 

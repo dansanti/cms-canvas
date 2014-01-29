@@ -167,7 +167,7 @@ if ( ! function_exists('admin_nav'))
             if (show_admin_nav_li($item) && empty($item['hidden']))
             {
                 $list_item .= '<li' . (($depth == 1 && is_admin_nav_li_selected($item)) ? ' class="selected"' : '') . ((isset($item['id'])) ? ' id="' . $item['id'] . '"' : '') . '>';
-                $list_item .= '<a href="' . (admin_is_permitted(ADMIN_PATH . '/' . $item['url']) ? site_url(ADMIN_PATH . '/' . $item['url']) : 'javascript:void(0)') . '"' . (($depth == 1) ? ' class="top"' : '') . '>' . $item['title'] . '</a>';
+                $list_item .= '<a href="' . (admin_is_permitted(ADMIN_PATH . '/' . $item['url']) ? site_url(ADMIN_PATH . '/' . $item['url']) : 'javascript:void(0)') . '"' . (($depth == 1) ? ' class="top"' : '') . '>' . $item['title'] . (($depth == 1 && ! empty($item['sub'])) ?'<span class="down_arrow_small"></span>' : '') . '</a>';
 
                 if ( ! empty($item['sub']))
                 {

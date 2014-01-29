@@ -5,8 +5,9 @@
         <div class="buttons">
             <ul id="add_entry_btn">
                 <li id="add_entry_li">
-                    <a class="button" rel="#entry_content_types" id="add_entry" href="javascript:void(0);"><span>Add Entry</span></a>
+                    <a class="button" rel="#entry_content_types" id="add_entry" href="javascript:void(0);"><span>Add Entry</span><span class="button_down_arrow"></span></a>
                     <ul id="content_types_dropdown">
+                        <li><div class="dropdown_heading">Content Types <span id="add_entry_close" class="dropdown_close"></span></div></li>
                         <?php if ( ! empty($content_types_add_entry)): ?>
                             <?php foreach($content_types_add_entry as $content_type_id => $content_type_title): ?>
                                 <li><a href="<?php echo site_url(ADMIN_PATH . '/content/entries/edit/' . $content_type_id); ?>"><?php echo $content_type_title; ?></a></li>
@@ -65,6 +66,7 @@
             <tbody>
                 <?php if ($Entries->exists()): ?>
                     <?php foreach($Entries as $Entry): ?>
+                    <?php $Last_modified_user = $Entry->last_modified_by_user->get(); ?>
                     <tr>
                         <td class="center"><input type="checkbox" value="<?php echo $Entry->id ?>" name="selected[]" /></td>
                         <td><?php echo strip_tags($Entry->title); ?></td>
@@ -72,7 +74,15 @@
                         <td class="right"><?php echo $Entry->id; ?></td>
                         <td><?php echo $Entry->content_types_title; ?></td>
                         <td><?php echo ucwords($Entry->status); ?></td>
-                        <td><?php echo date('m/d/Y h:i a', strtotime($Entry->modified_date)); ?></td>
+                        <td>
+                            <?php echo date('m/d/Y h:i a', strtotime($Entry->modified_date)); ?> 
+                            <?php if ($Last_modified_user->exists()): ?>
+                                <span class="light_text">
+                                    by 
+                                    <a href="<?php echo site_url(ADMIN_PATH . '/users/profile/' . $Last_modified_user->id); ?>"><?php echo $Last_modified_user->full_name(); ?></a>
+                                <span>
+                            <?php endif; ?>
+                        </td>
                         <td class="right"><?php if ($Entry->slug != ''): ?>[ <?php echo anchor("$Entry->slug", 'View', 'target="_blank"'); ?> ]<?php endif; ?> [ <?php echo anchor(ADMIN_PATH . "/content/entries/edit/" . $Entry->content_type_id . "/" . $Entry->id, 'Edit'); ?> ]</td>
                     </tr>
                     <?php endforeach; ?>
@@ -129,6 +139,11 @@
         $('#add_entry').click( function () {
             $('#content_types_dropdown').show();
             $('#add_entry').addClass('selected');
+        });
+
+        $('#add_entry_close').click( function () {
+            $('#add_entry').removeClass('selected');
+            $('#content_types_dropdown').hide();
         });
 
         $(document).mouseup( function (e) {

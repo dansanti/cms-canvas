@@ -291,6 +291,7 @@ class Entries extends Admin_Controller {
             $Entry->from_array($this->input->post());
             $Entry->modified_date = date('Y-m-d H:i:s');
             $Entry->created_date = date('Y-m-d H:i:s', strtotime($this->input->post('created_date')));
+            $Entry->last_modified_by_user_id = $this->secure->get_user_session()->id;
             $Entry->slug = ($this->input->post('slug') != '') ? $this->input->post('slug') : NULL;
             $Entry->url_title = ($this->input->post('url_title') != '') ? $this->input->post('url_title') : NULL;
             $Entry->meta_title = ($this->input->post('meta_title') != '') ? $this->input->post('meta_title') : NULL;
@@ -377,7 +378,7 @@ class Entries extends Admin_Controller {
             $this->navigations_library->clear_cache();
 
             // Set a success message
-            $this->session->set_flashdata('message', '<p class="success">Changes Saved.</p>');
+            $this->template->set_flash_notification('Changes saved.', 'success');
 
             // Deteremine where to redirect user
             if ($this->input->post('save_exit'))
@@ -429,7 +430,6 @@ class Entries extends Admin_Controller {
 
         if ($Entries->exists())
         {
-            $message = '';
             $entries_deleted = FALSE;
             $entries_required = FALSE;
             $this->load->model('navigations/navigation_items_model');
@@ -438,15 +438,15 @@ class Entries extends Admin_Controller {
             {
                 if ($Entry->id == $this->settings->content_module->site_homepage)
                 {
-                    $message .= '<p class="error">Entry ' . $Entry->title . ' (#' . $Entry->id . ') is set as the site homepage and cannot be deleted.</p>';
+                    $this->template->set_flash_notification('Entry ' . $Entry->title . ' (#' . $Entry->id . ') is set as the site homepage and cannot be deleted.', 'error');
                 }
                 else if ($Entry->id == $this->settings->content_module->custom_404)
                 {
-                    $message .= '<p class="error">Entry ' . $Entry->title . ' (#' . $Entry->id . ') is set as the custom 404 and cannot be deleted.</p>';
+                    $this->template->set_flash_notification('Entry ' . $Entry->title . ' (#' . $Entry->id . ') is set as the custom 404 and cannot be deleted.', 'error');
                 }
                 else if ($Entry->required)
                 {
-                    $message .= '<p class="error">Entry ' . $Entry->title . ' (#' . $Entry->id . ') is required by the system and cannot be deleted.</p>';
+                    $this->template->set_flash_notification('Entry ' . $Entry->title . ' (#' . $Entry->id . ') is required by the system and cannot be deleted.', 'error');
                 }
                 else
                 {
@@ -476,10 +476,8 @@ class Entries extends Admin_Controller {
                 $this->load->library('navigations/navigations_library');
                 $this->navigations_library->clear_cache();
 
-                $message .= '<p class="success">The selected items were successfully deleted.</p>';
+                $this->template->set_flash_notification('The selected items were successfully deleted.', 'success');
             }
-
-            $this->session->set_flashdata('message', $message);
         }
 
         redirect(ADMIN_PATH . '/content/entries');
@@ -678,6 +676,7 @@ class Entries extends Admin_Controller {
                 }
 
                 $Entry->modified_date = date('Y-m-d H:i:s');
+                $Entry->last_modified_by_user_id = $this->secure->get_user_session()->id;
                 $Entry->save();
 
                 $Content_fields->from_array($fields);

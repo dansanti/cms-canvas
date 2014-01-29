@@ -113,11 +113,11 @@ class Theme_editor extends Admin_Controller
             // Write post to file
             if (write_file($theme_dir . $file, $this->input->post('code')))
             {
-                $this->session->set_flashdata('message', '<p class="success">File saved successfully.</p>');
+                $this->template->set_flash_notification('File saved successfully.', 'success');
             }
             else
             {
-                $this->session->set_flashdata('message', '<p class="error">Unable to write to file.</p>');
+                $this->template->set_flash_notification('Unable to write to file.', 'error');
             }
 
             redirect(current_url());

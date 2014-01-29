@@ -50,6 +50,17 @@ class MY_Form_validation extends CI_Form_validation
         }
     }
   
+    /**
+     * Get Errors
+     *
+     * Returns an array of the current validation errors
+     *
+     * @return array
+     */
+    public function get_errors()
+    {
+        return $this->_error_array;
+    }
 }
 // END MY Form Validation Class
 

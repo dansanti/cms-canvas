@@ -96,7 +96,8 @@ class Categories extends Admin_Controller {
             $this->load->library('categories_library');
             $this->categories_library->clear_cache();
 
-            $this->session->set_flashdata('message', '<p class="success">Category Saved</p>');
+            $this->template->set_flash_notification('Category saved.', 'success');
+
             redirect(ADMIN_PATH . "/content/categories/tree/" . $category_group_id);
         }
 
@@ -165,7 +166,7 @@ class Categories extends Admin_Controller {
                 $Category->delete();
             }
 
-            $this->session->set_flashdata('message', '<p class="success">Category group was deleted successfully.</p>');
+            $this->template->set_flash_notification('Category group was deleted successfully.', 'success');
         }
 
         // Clear categories cache so updates will show on next page load
@@ -255,7 +256,7 @@ class Categories extends Admin_Controller {
             $Group->from_array($this->input->post());
             $Group->save();
 
-            $this->session->set_flashdata('message', '<p class="success">Category Group Saved.<p>');
+            $this->template->set_flash_notification('Category group saved.', 'success');
 
             if ($edit_mode)
             {
@@ -307,7 +308,7 @@ class Categories extends Admin_Controller {
                 $Group->delete();
             }
 
-            $this->session->set_flashdata('message', '<p class="success">Category group was deleted successfully.</p>');
+            $this->template->set_flash_notification('Category group was deleted successfully.', 'success');
         }
 
         // Clear categories cache so updates will show on next page load

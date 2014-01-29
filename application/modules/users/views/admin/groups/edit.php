@@ -4,6 +4,7 @@
 
         <div class="buttons">
             <a class="button" href="#" id="save" onClick="$('#user_edit_form').submit()"><span>Save</span></a>
+            <a class="button" href="<?php echo site_url(ADMIN_PATH . '/users/groups'); ?>"><span>Cancel</span></a>
         </div>
     </div>
     <div class="content">

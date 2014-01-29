@@ -141,7 +141,8 @@ class Items extends Admin_Controller {
             $this->load->library('navigations_library');
             $this->navigations_library->clear_cache();
 
-            $this->session->set_flashdata('message', '<p class="success">Navigation Item Saved</p>');
+            $this->template->set_flash_notification('Navigation item saved.', 'success');
+
             redirect(ADMIN_PATH . "/navigations/items/tree/$navigation_id");
         }
 
@@ -186,7 +187,7 @@ class Items extends Admin_Controller {
         $this->load->library('navigations_library');
         $this->navigations_library->clear_cache();
 
-        $this->session->set_flashdata('message', '<p class="success">Navigation Item(s) Deleted</p>');
+        $this->template->set_flash_notification('Navigation item(s) deleted.', 'success');
 
         if (isset($navigation_id))
         {

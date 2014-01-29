@@ -22,6 +22,8 @@ class Template
     public $scripts = array();
     public $stylesheets = array();
     public $css = array();
+    public $notifications = array();
+    public $flash_notifications = array();
     public $theme;
     public $layout;
     public $meta_title;
@@ -37,6 +39,13 @@ class Template
     {
         $this->CI =& get_instance();
         $this->set_theme();
+
+        $flash_notifications = $this->CI->session->flashdata('flash_notifications');
+
+        if ( ! empty($flash_notifications)) 
+        {
+            $this->notifications = $flash_notifications;
+        }
 
         $this->parse_views = $this->CI->config->item('parse_views');
     }
@@ -176,6 +185,70 @@ class Template
         }
 
         return $this;
+    }
+
+    // --------------------------------------------------------------------
+
+    /*
+     * Set Notification
+     *
+     * Sets a notification message that can be displayed in the theme
+     *
+     * @param string 
+     * @param string 
+     * @param bool 
+     *
+     * @return void
+     */
+    function set_notification($message, $severity = 'error')
+    {
+        $this->notifications[$severity][] = $message;
+    }
+
+        // --------------------------------------------------------------------
+
+    /*
+     * Set Flash Notification
+     *
+     * Sets a flashdata notification message to persist through the next page laod
+     *
+     * @param string 
+     * @param string 
+     * @param bool 
+     *
+     * @return void
+     */
+    function set_flash_notification($message, $severity = 'error')
+    {
+        $this->flash_notifications[$severity][] = $message;
+    }
+
+    // --------------------------------------------------------------------
+
+    /*
+     * Get Notifications
+     *
+     * Returns all notifications including form validation errors
+     *
+     * @return array
+     */
+    function get_notifications()
+    {
+        $validation_errors = $this->CI->form_validation->get_errors();
+
+        if (count($validation_errors) > 0)
+        {
+            if ( ! empty($this->notifications['error'])) 
+            {
+                $this->notifications['error'] = array_merge($this->notifications['error'], $validation_errors);
+            } 
+            else 
+            {
+                $this->notifications['error'] = $validation_errors;
+            }
+        }
+
+        return $this->notifications;
     }
 
     // --------------------------------------------------------------------
@@ -752,5 +825,12 @@ class Template
         }
 
         return $layouts_array;
+    }
+
+    public function __destruct()
+    {
+        if (count($this->flash_notifications) > 0) {
+            $this->CI->session->set_flashdata('flash_notifications', $this->flash_notifications);
+        }
     }
 }

@@ -59,8 +59,6 @@ class Users extends Public_Controller
             {
                 redirect($redirect_to);
             }
-
-            redirect(current_url());
         }
 
         // If the user was attempting to log into the admin panel use the admin theme
@@ -218,7 +216,7 @@ class Users extends Public_Controller
             $this->load->model('users_model');
             $User->save();
 
-            $this->session->set_flashdata('message', '<p class="success">An email containing your new password has been sent to your email address.</p>');
+            $this->template->set_flash_notification('An email containing your new password has been sent to your email address.', 'success');
 
             if ($this->uri->segment(1) == ADMIN_PATH)
             {

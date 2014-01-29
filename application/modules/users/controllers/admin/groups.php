@@ -121,7 +121,7 @@ class Groups extends Admin_Controller
             // Save Changes
             $Group->save(); 
 
-            $this->session->set_flashdata('message', '<p class="success">User Group Saved.</p>');
+            $this->template->set_flash_notification('User group saved.', 'success');
 
             redirect(ADMIN_PATH . '/users/groups'); 
         }
@@ -132,7 +132,6 @@ class Groups extends Admin_Controller
     function delete()
     {
         $this->load->model('groups_model');
-        $message = '';
 
         if ($this->input->post('selected'))
         {
@@ -152,7 +151,7 @@ class Groups extends Admin_Controller
             if ($Default_group->exists())
             {
                 unset($selected[array_search($Default_group->id, $selected)]);
-                $message .= '<p class="error">The group ' . $Default_group->name . ' is set as the default group and cannot be deleted.</p>';
+                $this->template->set_flash_notification('The group ' . $Default_group->name . ' is set as the default group and cannot be deleted.', 'error');
             }
         }
 
@@ -166,7 +165,7 @@ class Groups extends Admin_Controller
         foreach ($Required_groups as $Required_group)
         {
             unset($selected[array_search($Required_group->id, $selected)]);
-            $message .= '<p class="error">The group ' . $Required_group->name . ' is required by the system and cannot be deleted.</p>';
+            $this->template->set_flash_notification('The group ' . $Required_group->name . ' is required by the system and cannot be deleted.', 'error');
         }
 
         // Check if any of the selected are associated to pages
@@ -179,7 +178,7 @@ class Groups extends Admin_Controller
         foreach ($Associated_groups as $Associated_group)
         {
             unset($selected[array_search($Associated_group->id, $selected)]);
-            $message .= '<p class="error">The group ' . $Associated_group->name . ' is associated to one or more users and cannot be deleted.</p>';
+            $this->template->set_flash_notification('The group ' . $Associated_group->name . ' is associated to one or more users and cannot be deleted.', 'error');
         }
 
         $Group = new Groups_model();
@@ -199,11 +198,9 @@ class Groups extends Admin_Controller
             if ($Group->exists())
             {
                 $Group->delete_all();
-                $message = '<p class="success">The selected items were successfully deleted.</p>' . $message;
+                $this->template->set_flash_notification('The selected items were successfully deleted.', 'success');
             }
         }
-
-        $this->session->set_flashdata('message', $message);
 
         redirect(ADMIN_PATH . '/users/groups'); 
     }

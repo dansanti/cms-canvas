@@ -263,7 +263,29 @@ class Secure
      */
     function get_user_session()
     {
-        return  $this->CI->session->userdata('user_session');
+        return $this->CI->session->userdata('user_session');
+    }
+
+    // --------------------------------------------------------------------
+
+    /*
+     * Get Current User
+     *
+     * Returns the current user's session object as a Users_model object
+     *
+     * @return object
+     */
+    function get_current_user()
+    {
+        $Session_user = $this->get_user_session();
+
+        if ( ! empty($Session_user)) {
+            $this->CI->load->model('users/users_model');
+            $User = new Users_model();
+            $User->init($Session_user);
+        }
+
+        return $User;
     }
 
     // --------------------------------------------------------------------
@@ -278,5 +300,27 @@ class Secure
     function get_group_session()
     {
         return  $this->CI->session->userdata('group_session');
+    }
+
+    // --------------------------------------------------------------------
+
+    /*
+     * Get Current User
+     *
+     * Returns the current user's session object as a Users_model object
+     *
+     * @return object
+     */
+    function get_current_group()
+    {
+        $Session_group = $this->get_group_session();
+
+        if ( ! empty($Session_group)) {
+            $this->CI->load->model('users/groups_model');
+            $Group = new Groups_model();
+            $Group->init($Session_group);
+        }
+
+        return $Group;
     }
 }

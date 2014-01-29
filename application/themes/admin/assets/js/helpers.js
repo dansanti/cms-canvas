@@ -38,3 +38,32 @@ function hide_status()
 
     status.fadeOut('slow');
 }
+
+$(document).ready(function() {
+    $('#current_user').click(function() {
+        if ($('#current_user_dropdown').is(":visible")) {
+            $('#current_user_dropdown').hide();
+            $('#current_user_box_pointer').hide();
+            $('#current_user_box_pointer_white').hide();
+        } else {
+            $('#current_user_dropdown').show();
+            $('#current_user_box_pointer').show();
+            $('#current_user_box_pointer_white').show();
+        }
+    });
+
+    $(document).mouseup( function (e) {
+        if ($('#current_user_dropdown').is(":visible") 
+            && $(e.target).parents('#current_user_dropdown').length == 0 
+            && $(e.target).parents('#current_user').length == 0
+        ) {
+            $('#current_user_dropdown').hide();
+            $('#current_user_box_pointer').hide();
+            $('#current_user_box_pointer_white').hide();
+        }
+    });
+
+    $('.notification .dropdown_close').click(function() {
+        $(this).parent('.notification').remove();
+    });
+});

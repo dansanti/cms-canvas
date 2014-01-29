@@ -10,6 +10,12 @@ class Entries_model extends DataMapper
             'join_self_as' => 'entry',
             'join_other_as' => 'content_type',
         ),
+        'last_modified_by_user' => array(
+            'class' => 'users_model',
+            'other_field' => 'last_modified_entries',
+            'join_other_as' => 'last_modified_by_user',
+            'model_path' => 'application/modules/users',
+        ),
     );
 
     public $has_many = array(

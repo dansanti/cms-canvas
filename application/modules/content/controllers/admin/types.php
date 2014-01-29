@@ -174,7 +174,7 @@ class Types extends Admin_Controller {
             $this->cache->delete_all('entries');
             $this->cache->delete_all('content_types');
 
-            $this->session->set_flashdata('message', '<p class="success">Content Type Saved.</p>');
+            $this->template->set_flash_notification('Content type saved.', 'success');
 
             if ($this->input->post('save_exit'))
             {
@@ -212,7 +212,6 @@ class Types extends Admin_Controller {
 
         if ($Content_types->exists())
         {
-            $message = '';
             $content_types_deleted = FALSE;
             $this->load->model('content_fields_model');
 
@@ -220,11 +219,11 @@ class Types extends Admin_Controller {
             {
                 if ($Content_type->required)
                 {
-                    $message .= '<p class="error">Content type ' . $Content_type->title . ' (' . $Content_type->short_name . ') is required by the system and cannot be deleted.</p>';
+                    $this->template->set_flash_notification('Content type ' . $Content_type->title . ' (' . $Content_type->short_name . ') is required by the system and cannot be deleted.', 'error');
                 }
                 else if($Content_type->entries->limit(1)->get()->exists())
                 {
-                    $message .= '<p class="error">Content type ' . $Content_type->title .' ('. $Content_type->short_name . ') is associated to one or more entries and cannot be deleted.</p>';
+                    $this->template->set_flash_notification('Content type ' . $Content_type->title .' ('. $Content_type->short_name . ') is associated to one or more entries and cannot be deleted.', 'error');
                 }
                 else
                 {
@@ -258,11 +257,8 @@ class Types extends Admin_Controller {
                 $this->load->library('cache');
                 $this->cache->delete_all('entries');
 
-                $message = '<p class="success">The selected items were successfully deleted.</p>' . $message;
+                $this->template->set_flash_notification('The selected items were successfully deleted.', 'success');
             }
-
-
-            $this->session->set_flashdata('message', $message);
         }
 
         redirect(ADMIN_PATH . '/content/types');

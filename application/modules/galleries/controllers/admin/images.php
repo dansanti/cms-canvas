@@ -104,7 +104,8 @@ class Images extends Admin_Controller
             $Image->hide = ($this->input->post('hide')) ? 1 : 0;
             $Image->save();
 
-            $this->session->set_flashdata('message', '<p class="success">Image saved successfully.</p>');
+            $this->template->set_flash_notification('Image saved successfully.', 'success');
+
             redirect(ADMIN_PATH . '/galleries/images/index/'.$Image->gallery_id); 
         }
 
@@ -135,7 +136,7 @@ class Images extends Admin_Controller
         {
             $Images->delete_all();
 
-            $this->session->set_flashdata('message', '<p class="success">The selected items were successfully deleted.</p>');
+            $this->template->set_flash_notification('The selected items were successfully deleted.', 'success');
         }
 
         redirect(ADMIN_PATH . '/galleries/images/index/'.$this->uri->segment(5)); 

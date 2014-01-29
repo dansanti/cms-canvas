@@ -1,11 +1,10 @@
-<div class="box" style="width: 400px; min-height: 300px; margin-top: 40px; margin-left: auto; margin-right: auto;">
+<div id="login_box" class="box">
     <div class="heading">
         <h1><img src="<?php echo theme_url('assets/images/lockscreen.png'); ?>" alt="" /> Please enter your login details.</h1>
     </div>
     <div id="login_form" class="content">
         <?php echo form_open(); ?>
-            <?php echo validation_errors(); ?>
-            <?php echo $this->session->flashdata('message'); ?>
+            <?php echo display_notifications(); ?>
 
             <div class="image">
                 <img src="<?php echo theme_url('assets/images/login.png'); ?>" alt="Please enter your login details." />
